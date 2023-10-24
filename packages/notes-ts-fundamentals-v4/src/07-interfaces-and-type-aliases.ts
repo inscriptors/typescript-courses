@@ -3,42 +3,44 @@ type Amount = {
   currency: string
   value: number
 }
-/*
-// function printAmount(amt: Amount) {
-//     console.log(amt)
 
-//     const { currency, value } = amt
-//     console.log(`${currency} ${value}`)
-// }
+function printAmount(amt: Amount) {
+  console.log(amt)
 
-// const donation = {
-//     currency: "USD",
-//     value: 30.0,
-//     description: "Donation to food bank",
-// }
+  const { currency, value } = amt
+  console.log(`${currency} ${value}`)
+}
 
-// printAmount(donation) //✔️ Valid
+const donation = {
+  currency: 'USD',
+  value: 30.0,
+  description: 'Donation to food bank',
+}
 
+printAmount(donation) //✔️ Valid
 
 //? Let's look at a familiar example from the last chapter
-/*
-// function flipCoin() {
-//     if (Math.random() > 0.5) return "heads"
-//     return "tails"
-// }
-// const success = ["success", { name: "Mike North", email: "mike@example.com" }] as const
-// const fail = ["error", new Error("Something went wrong!")] as const
 
-// export function maybeGetUserInfo():
-//     | readonly ["error", Error]
-//     | readonly ["success", { name: string; email: string }] {
-//     // implementation is the same in both examples
-//     if (flipCoin() === 'heads') {
-//         return success
-//     } else {
-//         return fail
-//     }
-// }
+function flipCoin() {
+  if (Math.random() > 0.5) return 'heads'
+  return 'tails'
+}
+const success = [
+  'success',
+  { name: 'Mike North', email: 'mike@example.com' },
+] as const
+const fail = ['error', new Error('Something went wrong!')] as const
+
+export function maybeGetUserInfo():
+  | readonly ['error', Error]
+  | readonly ['success', { name: string; email: string }] {
+  // implementation is the same in both examples
+  if (flipCoin() === 'heads') {
+    return success
+  } else {
+    return fail
+  }
+}
 
 //? Let's model the return type as an interface
 /*
