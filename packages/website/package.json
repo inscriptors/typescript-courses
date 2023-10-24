@@ -1,11 +1,36 @@
 {
   "name": "website",
+  "version": "0.0.1",
   "private": true,
   "description": "Mike North's TypeScript Course Websites",
-  "version": "0.0.1",
-  "author": "Mike North <michael.l.north@gmail.com> (https://mike.works)",
+  "keywords": [
+    "gatsby"
+  ],
+  "homepage": "https://github.com/mike-north/typescript-courses#readme",
   "bugs": {
     "url": "https://github.com/mike-north/typescript-courses"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mike-north/typescript-courses.git"
+  },
+  "author": "Mike North <michael.l.north@gmail.com> (https://mike.works)",
+  "main": "n/a",
+  "scripts": {
+    "build": "yarn gatsby build",
+    "build-prod": "yarn build --prefix-paths",
+    "clean": "yarn gatsby clean",
+    "cy:open": "yarn cypress open --browser chrome --e2e",
+    "dev": "yarn gatsby develop --verbose",
+    "format": "prettier --write \"**/*.{ts,js,tsx,jsx,json,md}\"",
+    "lint": "yarn lint:ts && yarn lint:md",
+    "lint:md": "yarn markdownlint -c ../../.markdownlint.jsonc content",
+    "lint:ts": "yarn eslint . --ext ts,js,tsx,jsx",
+    "serve": "yarn gatsby serve",
+    "test": "yarn test:jest && yarn test:cypress",
+    "test-cypress": "CYPRESS_SUPPORT=y yarn start-server-and-test dev http://localhost:8000 cy:open",
+    "test-jest": "yarn jest",
+    "typecheck": "yarn tsc -P . --noEmit"
   },
   "dependencies": {
     "gatsby": "^3.15.0",
@@ -77,33 +102,8 @@
     "start-server-and-test": "^2.0.1",
     "typescript": "5.3.0-beta"
   },
-  "homepage": "https://github.com/mike-north/typescript-courses#readme",
-  "keywords": [
-    "gatsby"
-  ],
-  "main": "n/a",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mike-north/typescript-courses.git"
-  },
-  "scripts": {
-    "build": "yarn gatsby build",
-    "build-prod": "yarn build --prefix-paths",
-    "dev": "yarn gatsby develop --verbose",
-    "format": "prettier --write \"**/*.{ts,js,tsx,jsx,json,md}\"",
-    "serve": "yarn gatsby serve",
-    "clean": "yarn gatsby clean",
-    "cy:open": "yarn cypress open --browser chrome --e2e",
-    "lint": "yarn lint:ts && yarn lint:md",
-    "lint:md": "yarn markdownlint -c ../../.markdownlint.jsonc content",
-    "lint:ts": "yarn eslint . --ext ts,js,tsx,jsx",
-    "test": "yarn test:jest && yarn test:cypress",
-    "test-jest": "yarn jest",
-    "test-cypress": "CYPRESS_SUPPORT=y yarn start-server-and-test dev http://localhost:8000 cy:open",
-    "typecheck": "yarn tsc -P . --noEmit"
-  },
   "volta": {
-    "node": "18.18.2",
+    "node": "20.8.1",
     "yarn": "3.6.4"
   }
 }

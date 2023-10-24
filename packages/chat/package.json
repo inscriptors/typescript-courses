@@ -1,11 +1,19 @@
 {
   "name": "chat",
   "version": "1.0.0",
+  "private": true,
   "description": "A chat app for Mike's Enterprise TS course",
   "repository": "https://github.com/mike-north/typescript-courses/",
-  "author": "Mike North (michael.l.north@gmail.com)",
   "license": "NOLICENSE",
-  "private": true,
+  "author": "Mike North (michael.l.north@gmail.com)",
+  "scripts": {
+    "build": "yarn parcel build index.html",
+    "dev": "node ./server/index.mjs",
+    "lint": "yarn eslint src server tests --ext .js,.ts,.jsx,.tsx,.mjs,.mts -c ./.eslintrc.js",
+    "test": "yarn test-jest",
+    "test-jest": "yarn jest tests",
+    "typecheck": "yarn tsc -P ."
+  },
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "dependencies": {
     "@parcel/core": "^2.10.0",
@@ -54,19 +62,11 @@
     "tsd": "^0.29.0",
     "typescript": "5.3.0-beta"
   },
-  "scripts": {
-    "build": "yarn parcel build index.html",
-    "dev": "node ./server/index.mjs",
-    "lint": "yarn eslint src server tests --ext .js,.ts,.jsx,.tsx,.mjs,.mts -c ./.eslintrc.js",
-    "test": "yarn test-jest",
-    "test-jest": "yarn jest tests",
-    "typecheck": "yarn tsc -P ."
-  },
   "engines": {
     "node": ">=16.0.0"
   },
   "volta": {
-    "node": "18.18.2",
+    "node": "20.8.1",
     "yarn": "3.6.4"
   }
 }

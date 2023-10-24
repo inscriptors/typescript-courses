@@ -82,17 +82,17 @@ yarn config set nodeLinker node-modules
 Add the following fields your `packages/chat-stdlib/package.json` file
 
 ```json
- {
-   "main": "dist/index.js",
-   "types": "dist/index.d.ts",
-   "scripts": {
-     "build": "yarn tsc",
-     "dev": "yarn build --watch --preserveWatchOutput",
-     "lint": "yarn eslint src --ext js,ts",
-     "test": "yarn jest"
-   },
-   "license": "NOLICENSE"
- }
+{
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "yarn tsc",
+    "dev": "yarn build --watch --preserveWatchOutput",
+    "lint": "yarn eslint src --ext js,ts",
+    "test": "yarn jest"
+  },
+  "license": "NOLICENSE"
+}
 ```
 
 and **make sure to save the file**. This ensures that TS and non-TS consumers alike can use this library, and that we can run the following commands
@@ -116,7 +116,7 @@ this will add `node` and `yarn` versions to your `package.json` automatically.
 
 ```diff
 + "volta": {
-+   "node": "18.18.2",
++   "node": "20.8.1",
 +   "yarn": "3.6.4"
 + }
 ```
@@ -176,7 +176,7 @@ Next, let's describe the _output_ of the TS compiler, ensuring that everything e
     /* Emit */
 +   "declaration": true,
 +   "outDir": "dist",
-+   "stripInternal": true, 
++   "stripInternal": true,
   },
 ```
 
@@ -213,9 +213,9 @@ Let's make sure that we have an "extra strict" type-checking configuration, appr
 +   "noUnusedParameters": true,
 +   "exactOptionalPropertyTypes": true,
 +   "noImplicitReturns": true,
-+   "noUncheckedIndexedAccess": true,                
++   "noUncheckedIndexedAccess": true,
 +   "noImplicitOverride": true,
-+   "noPropertyAccessFromIndexSignature": true,      
++   "noPropertyAccessFromIndexSignature": true,
   }
 ```
 
@@ -226,7 +226,7 @@ Finally we need to define an area for our source code. Add one more line to your
 ```diff
 {
   "compilerOptions": {
-    ... 
+    ...
 - }
 + },
 + "include": ["src"]
@@ -252,46 +252,50 @@ Open `src/index.ts` and set its contents to the following
  * @public
  */
 export class Deferred<T> {
-    // The promise object associated with the deferred operation.
-    #_promise: Promise<T>
-    /**
-     * The function to call to resolve the deferred operation.
-     */
-    #_resolve!: Parameters<ConstructorParameters<typeof Promise<T>>[0]>[0]
-    /**
-     * The function to call to reject the deferred operation.
-     */
-    #_reject!: Parameters<ConstructorParameters<typeof Promise<T>>[0]>[1]
-    /**
-     * Creates a new instance of the Deferred class.
-     */
-    constructor() {
-        this.#_promise = new Promise<T>((resolve, reject) => {
-            this.#_resolve = resolve
-            this.#_reject = reject
-        })
-    }
+  // The promise object associated with the deferred operation.
+  #_promise: Promise<T>
+  /**
+   * The function to call to resolve the deferred operation.
+   */
+  #_resolve!: Parameters<
+    ConstructorParameters<typeof Promise<T>>[0]
+  >[0]
+  /**
+   * The function to call to reject the deferred operation.
+   */
+  #_reject!: Parameters<
+    ConstructorParameters<typeof Promise<T>>[0]
+  >[1]
+  /**
+   * Creates a new instance of the Deferred class.
+   */
+  constructor() {
+    this.#_promise = new Promise<T>((resolve, reject) => {
+      this.#_resolve = resolve
+      this.#_reject = reject
+    })
+  }
 
-    /**
-     * Gets the promise object associated with the deferred operation.
-     */
-    get promise() {
-        return this.#_promise
-    }
+  /**
+   * Gets the promise object associated with the deferred operation.
+   */
+  get promise() {
+    return this.#_promise
+  }
 
-    /**
-     * Gets the function to call to resolve the deferred operation.
-     */
-    get resolve() {
-        return this.#_resolve
-    }
+  /**
+   * Gets the function to call to resolve the deferred operation.
+   */
+  get resolve() {
+    return this.#_resolve
+  }
 
-    /**
-     * Gets the function to call to reject the deferred operation.
-     */
-    get reject() {
-        return this.#_reject
-    }
+  /**
+   * Gets the function to call to reject the deferred operation.
+   */
+  get reject() {
+    return this.#_reject
+  }
 }
 
 /**
@@ -300,8 +304,8 @@ export class Deferred<T> {
  * @internal
  */
 export function stringifyErrorValue(err: Error): string {
-    return `${err.name.toUpperCase()}: ${err.message}
-    ${err.stack || '(no stack trace information)'}`
+  return `${err.name.toUpperCase()}: ${err.message}
+    ${err.stack || "(no stack trace information)"}`
 }
 
 /**
@@ -311,13 +315,19 @@ export function stringifyErrorValue(err: Error): string {
  * @param err - The thrown value
  * @beta
  */
-export function stringifyError(err: unknown, errorDescription?: string) {
-    return `${errorDescription ?? "( no error description )"}\n${err instanceof Error
-            ? stringifyErrorValue(err)
-            : err
-                ? '' + err
-                : '(missing error information)'
-        }`
+export function stringifyError(
+  err: unknown,
+  errorDescription?: string,
+) {
+  return `${
+    errorDescription ?? "( no error description )"
+  }\n${
+    err instanceof Error
+      ? stringifyErrorValue(err)
+      : err
+      ? "" + err
+      : "(missing error information)"
+  }`
 }
 ```
 
@@ -469,8 +479,8 @@ The problem occurs here
 
 ```ts twoslash
 export function stringifyErrorValue(err: Error): string {
-    return `${err.name.toUpperCase()}: ${err.message}
-    ${err.stack || '(no stack trace information)'}`
+  return `${err.name.toUpperCase()}: ${err.message}
+    ${err.stack || "(no stack trace information)"}`
 }
 /// ---cut---
 /**
@@ -480,13 +490,19 @@ export function stringifyErrorValue(err: Error): string {
  * @param err - The thrown value
  * @beta
  */
-export function stringifyError(err: unknown, errorDescription?: string) {
-  return `${errorDescription ?? "( no error description )"}\n${err instanceof Error
-    ? stringifyErrorValue(err)
-    : err
-      ? '' + err
-//            ^?
-      : '(missing error information)'
+export function stringifyError(
+  err: unknown,
+  errorDescription?: string,
+) {
+  return `${
+    errorDescription ?? "( no error description )"
+  }\n${
+    err instanceof Error
+      ? stringifyErrorValue(err)
+      : err
+      ? "" + err
+      : //            ^?
+        "(missing error information)"
   }`
 }
 ```
@@ -532,48 +548,51 @@ touch tests/index.test.ts
 // @filename: node_modules/chat-stdlib/index.ts
 // @types: jest
 export class Deferred<T> {
-    // The promise object associated with the deferred operation.
-    #_promise: Promise<T>
-    /**
-     * The function to call to resolve the deferred operation.
-     */
-    #_resolve!: Parameters<ConstructorParameters<typeof Promise<T>>[0]>[0]
-    /**
-     * The function to call to reject the deferred operation.
-     */
-    #_reject!: Parameters<ConstructorParameters<typeof Promise<T>>[0]>[1]
-    /**
-     * Creates a new instance of the Deferred class.
-     */
-    constructor() {
-        this.#_promise = new Promise<T>((resolve, reject) => {
-            this.#_resolve = resolve
-            this.#_reject = reject
-        })
-    }
+  // The promise object associated with the deferred operation.
+  #_promise: Promise<T>
+  /**
+   * The function to call to resolve the deferred operation.
+   */
+  #_resolve!: Parameters<
+    ConstructorParameters<typeof Promise<T>>[0]
+  >[0]
+  /**
+   * The function to call to reject the deferred operation.
+   */
+  #_reject!: Parameters<
+    ConstructorParameters<typeof Promise<T>>[0]
+  >[1]
+  /**
+   * Creates a new instance of the Deferred class.
+   */
+  constructor() {
+    this.#_promise = new Promise<T>((resolve, reject) => {
+      this.#_resolve = resolve
+      this.#_reject = reject
+    })
+  }
 
-    /**
-     * Gets the promise object associated with the deferred operation.
-     */
-    get promise() {
-        return this.#_promise
-    }
+  /**
+   * Gets the promise object associated with the deferred operation.
+   */
+  get promise() {
+    return this.#_promise
+  }
 
-    /**
-     * Gets the function to call to resolve the deferred operation.
-     */
-    get resolve() {
-        return this.#_resolve
-    }
+  /**
+   * Gets the function to call to resolve the deferred operation.
+   */
+  get resolve() {
+    return this.#_resolve
+  }
 
-    /**
-     * Gets the function to call to reject the deferred operation.
-     */
-    get reject() {
-        return this.#_reject
-    }
+  /**
+   * Gets the function to call to reject the deferred operation.
+   */
+  get reject() {
+    return this.#_reject
+  }
 }
-
 
 /**
  * Stringify an Error instance
@@ -581,8 +600,8 @@ export class Deferred<T> {
  * @internal
  */
 export function stringifyErrorValue(err: Error): string {
-    return `${err.name.toUpperCase()}: ${err.message}
-${err.stack || '(no stack trace information)'}`
+  return `${err.name.toUpperCase()}: ${err.message}
+${err.stack || "(no stack trace information)"}`
 }
 
 /**
@@ -592,75 +611,88 @@ ${err.stack || '(no stack trace information)'}`
  * @param err - The thrown value
  * @beta
  */
-export function stringifyError(err: unknown, errorDescription?: string) {
-    return `${errorDescription ?? "( no error description )"}\n${err instanceof Error
-            ? stringifyErrorValue(err)
-            : err
-                ? String(err)
-                : '(missing error information)'
-        }`
+export function stringifyError(
+  err: unknown,
+  errorDescription?: string,
+) {
+  return `${
+    errorDescription ?? "( no error description )"
+  }\n${
+    err instanceof Error
+      ? stringifyErrorValue(err)
+      : err
+      ? String(err)
+      : "(missing error information)"
+  }`
 }
 /// ---cut---
 // @filename: tests/index.test.ts
-import { Deferred, stringifyError } from 'chat-stdlib'
+import { Deferred, stringifyError } from "chat-stdlib"
 
-describe('Utils - Deferred', () => {
+describe("Utils - Deferred", () => {
   let deferred: Deferred<string>
 
   beforeEach(() => {
     deferred = new Deferred()
   })
 
-  it('should create a new instance with a promise', () => {
+  it("should create a new instance with a promise", () => {
     expect(deferred.promise).toBeInstanceOf(Promise)
   })
 
-  it('should resolve the promise when calling resolve', async () => {
-    const testValue = 'Resolved Value'
+  it("should resolve the promise when calling resolve", async () => {
+    const testValue = "Resolved Value"
     deferred.resolve(testValue)
 
     await expect(deferred.promise).resolves.toBe(testValue)
   })
 
-  it('should reject the promise when calling reject', async () => {
-    const testError = new Error('Rejected Error')
+  it("should reject the promise when calling reject", async () => {
+    const testError = new Error("Rejected Error")
     deferred.reject(testError)
 
-    await expect(deferred.promise).rejects.toThrow(testError)
+    await expect(deferred.promise).rejects.toThrow(
+      testError,
+    )
   })
 
-  it('should have resolve and reject methods', () => {
-    expect(typeof deferred.resolve).toBe('function')
-    expect(typeof deferred.reject).toBe('function')
+  it("should have resolve and reject methods", () => {
+    expect(typeof deferred.resolve).toBe("function")
+    expect(typeof deferred.reject).toBe("function")
   })
 })
 
-
-describe('Utils - stringifyError', () => {
-  it('should stringify an Error instance correctly', () => {
-    const errorDescription = 'Test Error'
-    const testError = new Error('This is a test error')
+describe("Utils - stringifyError", () => {
+  it("should stringify an Error instance correctly", () => {
+    const errorDescription = "Test Error"
+    const testError = new Error("This is a test error")
     const expectedString = `${errorDescription}\n${testError.name.toUpperCase()}: ${
       testError.message
     }\n${testError.stack}`
 
-    const result = stringifyError(testError, errorDescription)
+    const result = stringifyError(
+      testError,
+      errorDescription,
+    )
 
     expect(result).toBe(expectedString)
   })
 
-  it('should stringify a non-Error value correctly', () => {
-    const errorDescription = 'Test Error'
-    const testValue = 'This is a test value'
+  it("should stringify a non-Error value correctly", () => {
+    const errorDescription = "Test Error"
+    const testValue = "This is a test value"
     const expectedString = `${errorDescription}\n${testValue}`
 
-    const result = stringifyError(testValue, errorDescription)
+    const result = stringifyError(
+      testValue,
+      errorDescription,
+    )
 
     expect(result).toBe(expectedString)
   })
 
-  it('should handle missing error information', () => {
-    const errorDescription = 'Test Error'
+  it("should handle missing error information", () => {
+    const errorDescription = "Test Error"
     const expectedString = `${errorDescription}\n(missing error information)`
 
     const result = stringifyError(null, errorDescription)
@@ -668,15 +700,20 @@ describe('Utils - stringifyError', () => {
     expect(result).toBe(expectedString)
   })
 
-  it('should handle Error instance without a stack trace', () => {
-    const errorDescription = 'Test Error'
-    const testError = new Error('This is a test error without stack')
+  it("should handle Error instance without a stack trace", () => {
+    const errorDescription = "Test Error"
+    const testError = new Error(
+      "This is a test error without stack",
+    )
     delete testError.stack
     const expectedString = `${errorDescription}\n${testError.name.toUpperCase()}: ${
       testError.message
     }\n(no stack trace information)`
 
-    const result = stringifyError(testError, errorDescription)
+    const result = stringifyError(
+      testError,
+      errorDescription,
+    )
 
     expect(result).toBe(expectedString)
   })
@@ -795,7 +832,7 @@ index c5b47c8..51da632 100644
     */
 -  "mainEntryPointFilePath": "<projectFolder>/lib/index.d.ts",
 +  "mainEntryPointFilePath": "<projectFolder>/dist/index.d.ts",
- 
+
    /**
     * A list of NPM package names whose exports should be treated as part of this package.
     *
@@ -808,7 +845,7 @@ index c5b47c8..51da632 100644
       */
 -    "enabled": true
 +    "enabled": true,
- 
+
      /**
       * Specifies the output path for a .d.ts rollup file to be generated without any trimming.
       * This file will include all declarations that are exported by the main entry point.
@@ -821,7 +858,7 @@ index c5b47c8..51da632 100644
       */
 -    // "untrimmedFilePath": "<projectFolder>/dist/<unscopedPackageName>.d.ts",
 +    "untrimmedFilePath": "<projectFolder>/dist/<unscopedPackageName>-private.d.ts",
- 
+
      /**
       * Specifies the output path for a .d.ts rollup file to be generated with trimming for an "alpha" release.
       * This file will include only declarations that are marked as "@public", "@beta", or "@alpha".
@@ -834,7 +871,7 @@ index c5b47c8..51da632 100644
       */
 -    // "alphaTrimmedFilePath": "<projectFolder>/dist/<unscopedPackageName>-alpha.d.ts",
 +    "alphaTrimmedFilePath": "<projectFolder>/dist/<unscopedPackageName>-alpha.d.ts",
- 
+
      /**
       * Specifies the output path for a .d.ts rollup file to be generated with trimming for a "beta" release.
       * This file will include only declarations that are marked as "@public" or "@beta".
@@ -847,7 +884,7 @@ index c5b47c8..51da632 100644
       */
 -    // "betaTrimmedFilePath": "<projectFolder>/dist/<unscopedPackageName>-beta.d.ts",
 +    "betaTrimmedFilePath": "<projectFolder>/dist/<unscopedPackageName>-beta.d.ts",
- 
+
      /**
       * Specifies the output path for a .d.ts rollup file to be generated with trimming for a "public" release.
       * This file will include only declarations that are marked as "@public".
@@ -860,7 +897,7 @@ index c5b47c8..51da632 100644
       */
 -    // "publicTrimmedFilePath": "<projectFolder>/dist/<unscopedPackageName>-public.d.ts",
 +    "publicTrimmedFilePath": "<projectFolder>/dist/<unscopedPackageName>.d.ts"
- 
+
      /**
       * When a declaration is trimmed, by default it will be replaced by a code comment such as
       * "Excluded from this release type: exampleMember".  Set "omitTrimmingComments" to true to remove the
@@ -964,7 +1001,7 @@ yarn build-with-docs
 You should see something like
 
 ```pre
-Warning: You have changed the public API signature for this project. 
+Warning: You have changed the public API signature for this project.
   Please copy the file "temp/chat-stdlib.api.md" to "etc/chat-stdlib.api.md",
   or perform a local build (which does this automatically). See the Git
   repo documentation for more info.
@@ -991,7 +1028,7 @@ You should now see an updated api-report. It's now very easy to see the ramifica
 +++ b/packages/chat-stdlib/etc/chat-stdlib.api.md
 @@ -13,6 +13,6 @@ export class Deferred<T> {
  }
- 
+
  // @beta
 -export function stringifyError(err: unknown, errorDescription?: string): string;
 +export function stringifyError(err: unknown, errorDescription: string): string;

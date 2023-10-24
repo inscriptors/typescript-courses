@@ -1,17 +1,17 @@
 {
     "name": "hello-ts",
-    "license": "NOLICENSE",
     "version": "0.0.1",
-    "devDependencies": {
-        "typescript": "^4.9.0"
-    },
+    "license": "NOLICENSE",
     "scripts": {
         "build": "yarn tsc",
         "dev": "yarn tsc --watch --preserveWatchOutput",
         "typecheck": "yarn tsc -P . --noEmit"
     },
+    "devDependencies": {
+        "typescript": "^4.9.0"
+    },
     "volta": {
-        "node": "18.18.2",
+        "node": "20.8.1",
         "yarn": "3.6.4"
     }
 }
